@@ -2,18 +2,21 @@
 
 import { getExchange } from './index'
 
-export interface Ticker {
+export interface TickerType {
     symbol: string
     info: {
         bid: string
     }
 }
 
-export async function fetchTicker( // TODO MOCK THIS
+const fetchTicker = async function (
+    // TODO MOCK THIS
     exchangeId: string,
     symbols: string,
-): Promise<Ticker> {
+): Promise<TickerType> {
     const exchange = getExchange(exchangeId)
 
     return exchange.fetchTicker(symbols)
 }
+
+export default { fetchTicker }

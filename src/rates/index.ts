@@ -3,14 +3,14 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const ccxt = require('ccxt')
 
-import { Ticker, fetchTicker } from './ticker'
+import Ticker, { TickerType } from './ticker'
 
 interface Exchange {
-    fetchTicker: (symbols: string) => Ticker
+    fetchTicker: (symbols: string) => TickerType
 }
 
 export async function getEURUSD(): Promise<number> {
-    const ticker = await fetchTicker('bitstamp', 'EUR/USD')
+    const ticker = await Ticker.fetchTicker('bitstamp', 'EUR/USD')
 
     const bid: string = ticker.info.bid
 
