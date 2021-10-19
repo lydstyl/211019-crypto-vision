@@ -1,9 +1,24 @@
-import { hello } from './index'
+import { getEURUSD, getExchange } from './index'
 
-describe('greeter function', () => {
-  it('greets a user with `Hello, {name}` message', () => {
-    const result = hello()
+describe('getEURUSD function', () => {
+    it('return EUR/USD bid', async () => {
+        const result = await getEURUSD()
 
-    expect(result).toBe(`hello`)
-  })
+        expect(result).toHaveProperty('EURUSD')
+    })
+
+    it('EUR/USD bid is more than 0.5 and less than 2', async () => {
+        const result = await getEURUSD()
+
+        expect(result.EURUSD).toBeGreaterThan(0.5)
+        expect(result.EURUSD).toBeLessThan(2)
+    })
+})
+
+describe('getExchange function', () => {
+    it('return an object with a fetchTicker property', () => {
+        const result = getExchange('bitstamp')
+
+        expect(result).toHaveProperty('fetchTicker')
+    })
 })
