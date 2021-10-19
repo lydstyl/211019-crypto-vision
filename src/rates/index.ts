@@ -5,23 +5,18 @@ const ccxt = require('ccxt')
 
 import { Ticker, fetchTicker } from './ticker'
 
-interface EURUSD {
-    EURUSD: number
-}
 interface Exchange {
     fetchTicker: (symbols: string) => Ticker
 }
 
-export async function getEURUSD(): Promise<EURUSD> {
+export async function getEURUSD(): Promise<number> {
     const ticker = await fetchTicker('bitstamp', 'EUR/USD')
 
-    const bid = ticker.info.bid
+    const bid: string = ticker.info.bid
 
-    const bidNumber = parseFloat(bid)
+    const bidNumber: number = parseFloat(bid)
 
-    return {
-        EURUSD: bidNumber,
-    }
+    return bidNumber
 }
 
 export function getExchange(exchangeId: string): Exchange {
@@ -32,8 +27,3 @@ export function getExchange(exchangeId: string): Exchange {
         uid: process.env.BITSTAMP_UID,
     })
 }
-
-// ;(async function () {
-//     const ticker = await fetchTicker('bitstamp', 'EUR/USD')
-//     console.log(`gb🚀 ~ bid`, ticker.info)
-// })()
