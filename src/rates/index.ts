@@ -3,9 +3,15 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const ccxt = require('ccxt')
 
+import { Ticker, fetchTicker } from './ticker'
+
 interface EURUSD {
     EURUSD: number
 }
+interface Exchange {
+    fetchTicker: (symbols: string) => Ticker
+}
+
 export async function getEURUSD(): Promise<EURUSD> {
     const ticker = await fetchTicker('bitstamp', 'EUR/USD')
 
@@ -18,16 +24,6 @@ export async function getEURUSD(): Promise<EURUSD> {
     }
 }
 
-interface Exchange {
-    fetchTicker: (symbols: string) => Ticker
-}
-interface Ticker {
-    symbol: string
-    info: {
-        bid: string
-    }
-}
-
 export function getExchange(exchangeId: string): Exchange {
     const exchangeClass = ccxt[exchangeId]
     return new exchangeClass({
@@ -35,15 +31,6 @@ export function getExchange(exchangeId: string): Exchange {
         secret: process.env.BITSTAMP_SECRET,
         uid: process.env.BITSTAMP_UID,
     })
-}
-
-export async function fetchTicker(
-    exchangeId: string,
-    symbols: string,
-): Promise<Ticker> {
-    const exchange = getExchange(exchangeId)
-
-    return exchange.fetchTicker(symbols)
 }
 
 // ;(async function () {
