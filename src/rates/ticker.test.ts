@@ -23,7 +23,7 @@ describe('fetchTicker function', () => {
     })
 })
 
-// Mock exemple from documentation :
+// Mock exemple from documentation https://jestjs.io/docs/mock-functions :
 
 // // users.test.js
 // import axios from 'axios';
