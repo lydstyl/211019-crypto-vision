@@ -1,7 +1,4 @@
-import {
-    // getBTCUSD,
-    getEURUSD,
-} from './rates/index'
+import { getBTCUSD, getEURUSD } from './rates/index'
 
 interface Crypto {
     price: number
@@ -24,12 +21,12 @@ interface CryptoVision {
 }
 
 export async function getCryptoVison(): Promise<CryptoVision> {
-    // const BTCUSD = await getBTCUSD() // todo test it
+    const BTCUSD = await getBTCUSD()
     const EURUSD = await getEURUSD()
 
     return {
         rates: {
-            BTCUSD: 66000.02,
+            BTCUSD,
             EURUSD,
         },
         accounts: {
