@@ -19,4 +19,6 @@ const fetchTicker = async function (
     return exchange.fetchTicker(symbols)
 }
 
+// export const hello = 'world' // this was for mock test
+
 export default { fetchTicker }
