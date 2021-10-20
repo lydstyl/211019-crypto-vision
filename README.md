@@ -9,7 +9,7 @@ Il récupère aussi via Google Sheets des données en dehors des exchanges comme
 - créer un .env à partir d'une copie de .env.exemple et y ajouter les clés et secrets
 - faire de même avec le fichier client_secret.json.exemple
 - npm i
-- vérifier que les tests passent via npm run test
+- vérifier que les tests passent via npm t
 - builder via npm run build:watch
 - voir le résultat sur le terminal via npm start
 - pour la parti Google Sheet, la doc n'est pas encore faite
