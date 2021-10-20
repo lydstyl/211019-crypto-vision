@@ -1,34 +1,24 @@
+import Rates from './index'
+
 import Ticker from './ticker'
 
-const mockedBid = '1.121'
+jest.mock('./index')
+const mockedRates = Rates as jest.Mocked<typeof Rates>
 
-jest.mock('./ticker', () => {
-    const originalTickerModule = jest.requireActual('./ticker')
-
-    return {
-        __esModule: true,
-        ...originalTickerModule,
-        default: {
-            fetchTicker: jest.fn((_exchangeId: string, symbols: string) =>
-                Promise.resolve({
-                    symbol: symbols,
-                    info: {
-                        bid: mockedBid,
-                    },
-                }),
-            ),
+test('should get exchange', () => {
+    const exchange = {
+        fetchTicker: () => {
+            return {
+                symbol: 'mySymbol',
+                info: {
+                    bid: '42.24',
+                },
+            }
         },
-        //hello: 'mocked hello (export const hello = "world"',
     }
-})
+    mockedRates.getExchange.mockReturnValue(exchange)
 
-describe('fetchTicker function', () => {
-    it('return an object with a fetchTicker property', async () => {
-        const result = await Ticker.fetchTicker('bitstamp', 'EUR/USD')
+    const result = Ticker.fetchTicker('bitstamp', 'xxx')
 
-        expect(result).toHaveProperty('symbol')
-        expect(result).toHaveProperty('info')
-        expect(result.info).toHaveProperty('bid')
-        expect(result.info.bid).toBe(mockedBid)
-    })
+    expect(result).toEqual(Promise.resolve(exchange))
 })

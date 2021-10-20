@@ -37,3 +37,9 @@ export function getExchange(exchangeId: string): Exchange {
         uid: process.env.BITSTAMP_UID,
     })
 }
+
+export default {
+    getEURUSD,
+    getBTCUSD,
+    getExchange,
+}
