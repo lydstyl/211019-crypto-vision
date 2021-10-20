@@ -19,6 +19,16 @@ export async function getEURUSD(): Promise<number> {
     return bidNumber
 }
 
+export async function getBTCUSD(): Promise<number> {
+    const ticker = await Ticker.fetchTicker('bitstamp', 'BTC/USD')
+
+    const bid: string = ticker.info.bid
+
+    const bidNumber: number = parseFloat(bid)
+
+    return bidNumber
+}
+
 export function getExchange(exchangeId: string): Exchange {
     const exchangeClass = ccxt[exchangeId]
     return new exchangeClass({
