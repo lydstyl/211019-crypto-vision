@@ -10,7 +10,6 @@ export interface TickerType {
 }
 
 const fetchTicker = async function (
-    // TODO MOCK THIS
     exchangeId: string,
     symbols: string,
 ): Promise<TickerType> {

@@ -1,4 +1,4 @@
-import { getCryptoVison } from './main'
+import { getCryptoVison } from './cryptoVision'
 
 const mockedEURUSD = 1.123
 
