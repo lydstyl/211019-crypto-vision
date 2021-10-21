@@ -1,15 +1,18 @@
 import { getCryptoVison } from './cryptoVision'
 
 const mockedEURUSD = 1.123
+const mockedBTCUSD = 65000.02
 
 jest.mock('./rates/index', () => {
     const originalModul = jest.requireActual('./rates/index')
 
+    const mockedGetBTCUSD = jest.fn(() => mockedBTCUSD)
     const mockedGetEURUSD = jest.fn(() => mockedEURUSD)
 
     return {
         __esModule: true,
         ...originalModul,
+        getBTCUSD: mockedGetBTCUSD,
         getEURUSD: mockedGetEURUSD,
     }
 })
