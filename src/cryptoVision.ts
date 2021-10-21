@@ -5,18 +5,22 @@ interface Crypto {
     amount: number
 }
 
+export interface Account {
+    [cryptoSymbol: string]: Crypto
+}
+
 interface CryptoVision {
     rates: {
         BTCUSD: number
         EURUSD: number
     }
     accounts: {
-        ledgerBlack: { [cryptoSymbol: string]: Crypto }
-        ledgerTransparent: { [cryptoSymbol: string]: Crypto }
-        bitstamp: { [cryptoSymbol: string]: Crypto }
-        binance: { [cryptoSymbol: string]: Crypto }
-        poloniex: { [cryptoSymbol: string]: Crypto }
-        bittrex: { [cryptoSymbol: string]: Crypto }
+        ledgerBlack: Account
+        ledgerTransparent: Account
+        bitstamp: Account
+        binance: Account
+        poloniex: Account
+        bittrex: Account
     }
 }
 

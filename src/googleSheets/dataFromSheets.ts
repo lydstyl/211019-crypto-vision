@@ -1,12 +1,28 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config()
 
-import { GoogleSpreadsheet } from 'google-spreadsheet'
+import { GoogleSpreadsheet, GoogleSpreadsheetRow } from 'google-spreadsheet'
 
-const spreadSheet = {
-    getData: async () => {
+import { Account } from '../cryptoVision'
+
+const rowsCount = 6
+
+class SpreadSheet {
+    spreadsheetId: string
+    rowsCount: number
+    sheet: unknown
+    // rows: Promise<GoogleSpreadsheetRow[]>
+
+    constructor(spreadsheetId: string, rowsCount: number) {
+        this.spreadsheetId = spreadsheetId
+        this.rowsCount = rowsCount
+
+        // this.rows = this.getRows()
+    }
+
+    async getRows(): Promise<GoogleSpreadsheetRow[]> {
         // Initialize the sheet - doc ID is the long id in the sheets URL
-        const doc = new GoogleSpreadsheet(process.env.GOOGLE_DOC_ID)
+        const doc = new GoogleSpreadsheet(this.spreadsheetId)
 
         try {
             // Initialize Auth - see more available options at https://theoephraim.github.io/node-google-spreadsheet/#/getting-started/authentication
@@ -25,27 +41,56 @@ const spreadSheet = {
             console.log('ERROR WHILE LOADING DOC INFOS')
             console.log(error)
         }
-        const sheet = doc.sheetsByIndex[4] // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
+        // const sheet = doc.sheetsByIndex[4] // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
+        const sheet = doc.sheetsByTitle['crypto3']
+        this.sheet = sheet
 
+        /////////
         let rows
 
         try {
             // read rows
-            rows = await sheet.getRows({ limit: 6, offset: 1 }) // can pass in { limit, offset }
+            rows = await sheet.getRows({ limit: this.rowsCount, offset: 0 }) // can pass in { limit, offset }
         } catch (error) {
             console.log('ERROR WHILE GETTING SHEET ROWS')
             console.log(error)
         }
 
-        const cryptos = rows.map((r) => r._rawData[0]).filter((c) => c !== '')
+        // const cryptos = rows.map((r) => r._rawData[0]).filter((c) => c !== '')
 
-        return cryptos
-    },
+        return rows
+    }
+
+    async getAccount(name: string): Promise<Account> {
+        const rawRows = await this.getRows()
+
+        const rows = rawRows.map((r) => ({
+            [r['crypto']]: { price: 0, amount: r[name] },
+        }))
+
+        const account = {}
+        rows.forEach((row) => {
+            const keys = Object.keys(row)
+
+            account[keys[0]] = row[keys[0]]
+        })
+
+        return account
+    }
+
+    // async getAccountNames(): Promise<string[]> {
+    //     const rawRows = await this.sheet.getRows({
+    //         limit: this.rowsCount,
+    //         offset: 0,
+    //     })
+    // }
 }
 
 ;(async function () {
-    const response = await spreadSheet.getData()
-    console.log(`gb🚀 ~ response`, response)
+    const patrimoine = new SpreadSheet(process.env.GOOGLE_DOC_ID, rowsCount)
+
+    const ledgerBlack = await patrimoine.getAccount('ledgerBlack')
+    console.log(`gb🚀 ~ ledgerBlack`, ledgerBlack)
 })()
 
-export default spreadSheet
+export default SpreadSheet
