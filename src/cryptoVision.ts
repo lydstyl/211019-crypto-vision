@@ -1,4 +1,5 @@
 import { getBTCUSD, getEURUSD } from './rates/index'
+import { getExternalAccounts } from './googleSheets/dataFromSheets'
 
 interface Crypto {
     price: number
@@ -18,19 +19,14 @@ interface CryptoVision {
         BTCUSD: number
         EURUSD: number
     }
-    accounts: {
-        ledgerBlack: Account
-        ledgerTransparent: Account
-        bitstamp: Account
-        binance: Account
-        poloniex: Account
-        bittrex: Account
-    }
+    accounts: Accounts
 }
 
 export async function getCryptoVison(): Promise<CryptoVision> {
     const BTCUSD = await getBTCUSD()
     const EURUSD = await getEURUSD()
+
+    const externalAccounts = await getExternalAccounts()
 
     return {
         rates: {
@@ -38,63 +34,50 @@ export async function getCryptoVison(): Promise<CryptoVision> {
             EURUSD,
         },
         accounts: {
-            // todo
-            ledgerBlack: {
-                BTC: {
-                    price: 1,
-                    amount: 0.3,
-                },
-                DAI: {
-                    price: 0.1,
-                    amount: 8000,
-                },
-            },
-            ledgerTransparent: {
-                BTC: {
-                    price: 1,
-                    amount: 0.2,
-                },
-            },
-            bitstamp: {
-                BTC: {
-                    price: 1,
-                    amount: 0.2,
-                },
-                XRP: {
-                    price: 1,
-                    amount: 0.2,
-                },
-            },
-            binance: {
-                XRP: {
-                    price: 1,
-                    amount: 0.2,
-                },
-                DAI: {
-                    price: 1,
-                    amount: 0.2,
-                },
-            },
-            poloniex: {
-                XRP: {
-                    price: 1,
-                    amount: 0.2,
-                },
-                DAI: {
-                    price: 1,
-                    amount: 0.2,
-                },
-            },
-            bittrex: {
-                XRP: {
-                    price: 1,
-                    amount: 0.2,
-                },
-                DAI: {
-                    price: 1,
-                    amount: 0.2,
-                },
-            },
+            ...externalAccounts,
+
+            // TODO split externalAccounts to ...autoAccounts & ...manualAccounts
+
+            // bitstamp: {
+            //     BTC: {
+            //         price: 1,
+            //         amount: 0.2,
+            //     },
+            //     XRP: {
+            //         price: 1,
+            //         amount: 0.2,
+            //     },
+            // },
+            // binance: {
+            //     XRP: {
+            //         price: 1,
+            //         amount: 0.2,
+            //     },
+            //     DAI: {
+            //         price: 1,
+            //         amount: 0.2,
+            //     },
+            // },
+            // poloniex: {
+            //     XRP: {
+            //         price: 1,
+            //         amount: 0.2,
+            //     },
+            //     DAI: {
+            //         price: 1,
+            //         amount: 0.2,
+            //     },
+            // },
+            // bittrex: {
+            //     XRP: {
+            //         price: 1,
+            //         amount: 0.2,
+            //     },
+            //     DAI: {
+            //         price: 1,
+            //         amount: 0.2,
+            //     },
+            // },
         },
     }
 }

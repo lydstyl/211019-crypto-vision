@@ -69,7 +69,7 @@ class SpreadSheet {
         const rawRows = await this.getRows()
 
         const rows = rawRows.map((r) => ({
-            [r['crypto']]: { price: 0, amount: r[name] },
+            [r['crypto']]: { price: undefined, amount: r[name] },
         }))
 
         const account = {}
@@ -100,27 +100,30 @@ class SpreadSheet {
     }
 }
 
-;(async function () {
+export const getExternalAccounts = async (): Promise<Accounts> => {
     const patrimoine = new SpreadSheet(process.env.GOOGLE_DOC_ID, rowsCount)
 
     const accountNames = await patrimoine.getAccountNames()
 
     const rawAccounts: { [name: string]: Promise<Account> } = {}
-
-    await accountNames.forEach(async (accountName) => {
+    accountNames.forEach((accountName) => {
         const account = patrimoine.getAccount(accountName)
-        console.log(
-            `gb🚀 ~ accountNames.forEach ~ account`,
-            accountName,
-            account,
-        )
         rawAccounts[accountName] = account
     })
 
-    // const ledgerBlack = await patrimoine.getAccount('ledgerBlack')
+    const promises: Promise<Account>[] = accountNames.map(
+        (key) => rawAccounts[key],
+    )
+    const accountsList: Account[] = await Promise.all(promises).then(
+        (values) => values,
+    )
 
     const accounts: Accounts = {}
+    accountNames.forEach((accountName, index) => {
+        accounts[accountName] = accountsList[index]
+    })
+
     return accounts
-})()
+}
 
 export default SpreadSheet
