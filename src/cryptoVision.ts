@@ -9,6 +9,10 @@ export interface Account {
     [cryptoSymbol: string]: Crypto
 }
 
+export interface Accounts {
+    [name: string]: Account
+}
+
 interface CryptoVision {
     rates: {
         BTCUSD: number
