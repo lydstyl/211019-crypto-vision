@@ -100,16 +100,34 @@ class SpreadSheet {
     }
 }
 
-export const getExternalAccounts = async (): Promise<Accounts> => {
+const isManual = (accountName: string): boolean => {
+    return accountName === accountName.toUpperCase()
+}
+
+export const getAccounts = async (
+    accountsFilter: 'all' | 'auto' | 'manual',
+): Promise<Accounts> => {
     const patrimoine = new SpreadSheet(process.env.GOOGLE_DOC_ID, rowsCount)
 
     const accountNames = await patrimoine.getAccountNames()
 
     const rawAccounts: { [name: string]: Promise<Account> } = {}
-    accountNames.forEach((accountName) => {
-        const account = patrimoine.getAccount(accountName)
-        rawAccounts[accountName] = account
-    })
+    accountNames
+        .filter((accountName) => {
+            if (accountsFilter === 'all') {
+                return true
+            }
+
+            if (accountsFilter === 'auto') {
+                return !isManual(accountName)
+            }
+
+            return isManual(accountName)
+        })
+        .forEach((accountName) => {
+            const account = patrimoine.getAccount(accountName)
+            rawAccounts[accountName] = account
+        })
 
     const promises: Promise<Account>[] = accountNames.map(
         (key) => rawAccounts[key],
@@ -120,7 +138,9 @@ export const getExternalAccounts = async (): Promise<Accounts> => {
 
     const accounts: Accounts = {}
     accountNames.forEach((accountName, index) => {
-        accounts[accountName] = accountsList[index]
+        if (accountsList[index]) {
+            accounts[accountName] = accountsList[index]
+        }
     })
 
     return accounts
