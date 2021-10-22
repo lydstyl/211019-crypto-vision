@@ -1,5 +1,6 @@
 import { getBTCUSD, getEURUSD } from './rates/index'
 import { getAccounts } from './googleSheets/dataFromSheets'
+import { getAllAutoAccounts } from './autoAccounts/autoAccounts'
 
 interface Crypto {
     price: number
@@ -27,7 +28,8 @@ export async function getCryptoVison(): Promise<CryptoVision> {
     const EURUSD = await getEURUSD()
 
     const manualAccounts = await getAccounts('manual')
-    const autoAccounts = await getAccounts('auto')
+    const autoAccounts = await getAllAutoAccounts()
+    console.log(`gb🚀 ~ getCryptoVison ~ autoAccounts`, autoAccounts)
 
     return {
         rates: {
@@ -36,7 +38,7 @@ export async function getCryptoVison(): Promise<CryptoVision> {
         },
         accounts: {
             ...manualAccounts,
-            ...autoAccounts,
+            // ...autoAccounts,
 
             // TODO split externalAccounts to ...autoAccounts & ...manualAccounts
 
