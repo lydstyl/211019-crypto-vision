@@ -43,7 +43,7 @@ class SpreadSheet {
             console.log(error)
         }
         // const sheet = doc.sheetsByIndex[4] // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
-        const sheet = doc.sheetsByTitle['crypto3']
+        const sheet = doc.sheetsByTitle[process.env.GOOGLE_SHEET_TITLE]
         this.sheet = sheet
 
         return sheet
