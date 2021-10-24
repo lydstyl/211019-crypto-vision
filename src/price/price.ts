@@ -6,13 +6,16 @@ export const addPrices = async (allAccountsWithoutPrice) => {
     Object.keys(allAccountsWithoutPrice).forEach((accountName) => {
         Object.keys(allAccountsWithoutPrice[accountName]).forEach(
             (cryptoSymbol) => {
-                // if (cryptoSymbol === 'USD') {
-
-                // }
-
                 if (prices[cryptoSymbol] !== undefined) {
-                    allAccountsWithoutPrice[accountName][cryptoSymbol].price =
-                        prices[cryptoSymbol]
+                    if (cryptoSymbol === 'USD') {
+                        allAccountsWithoutPrice[accountName][
+                            cryptoSymbol
+                        ].price = prices['DAI']
+                    } else {
+                        allAccountsWithoutPrice[accountName][
+                            cryptoSymbol
+                        ].price = prices[cryptoSymbol]
+                    }
                 }
             },
         )
@@ -52,7 +55,6 @@ export const fetchUsdPrices = async (): Promise<CryptoPrices> => {
 
         return usdPrices
     } catch (error) {
-        console.log(`gb🚀 ~ fetchUsdPrices ~ error`, error)
         return error
     }
 }
