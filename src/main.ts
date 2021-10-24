@@ -1,5 +1,5 @@
 import { getCryptoVison } from './cryptoVision'
-export { getCryptoVison } from './cryptoVision'
+//export { getCryptoVison } from './cryptoVision'
 ;(async function () {
     const cryptoVision = await getCryptoVison()
 
