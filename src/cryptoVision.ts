@@ -28,6 +28,7 @@ export async function getCryptoVison(): Promise<CryptoVision> {
     const EURUSD = await getEURUSD()
 
     const manualAccounts = await getAccounts('manual')
+    console.log(`gb🚀 ~ getCryptoVison ~ manualAccounts`, manualAccounts)
     const autoAccounts = await getAllAutoAccounts()
     console.log(`gb🚀 ~ getCryptoVison ~ autoAccounts`, autoAccounts)
 
@@ -38,7 +39,7 @@ export async function getCryptoVison(): Promise<CryptoVision> {
         },
         accounts: {
             ...manualAccounts,
-            // ...autoAccounts,
+            ...autoAccounts,
 
             // TODO split externalAccounts to ...autoAccounts & ...manualAccounts
 
