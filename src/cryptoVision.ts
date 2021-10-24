@@ -30,7 +30,7 @@ export async function getCryptoVison(): Promise<CryptoVision> {
     const manualAccounts = await getAccounts('manual')
     console.log(`gb🚀 ~ getCryptoVison ~ manualAccounts`, manualAccounts)
     const autoAccounts = await getAllAutoAccounts()
-    console.log(`gb🚀 ~ getCryptoVison ~ autoAccounts`, autoAccounts)
+    // console.log(`gb🚀 ~ getCryptoVison ~ autoAccounts`, autoAccounts)
 
     return {
         rates: {
@@ -40,29 +40,6 @@ export async function getCryptoVison(): Promise<CryptoVision> {
         accounts: {
             ...manualAccounts,
             ...autoAccounts,
-
-            // TODO split externalAccounts to ...autoAccounts & ...manualAccounts
-
-            // bitstamp: {
-            //     BTC: {
-            //         price: 1,
-            //         amount: 0.2,
-            //     },
-            //     XRP: {
-            //         price: 1,
-            //         amount: 0.2,
-            //     },
-            // },
-            // binance: {
-            //     XRP: {
-            //         price: 1,
-            //         amount: 0.2,
-            //     },
-            //     DAI: {
-            //         price: 1,
-            //         amount: 0.2,
-            //     },
-            // }
         },
     }
 }

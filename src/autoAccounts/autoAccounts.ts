@@ -47,7 +47,6 @@ const fetchBalances = (accountNames: string[]): Promise<Account>[] => {
         })
 
         const balance = await autoAccount.fetchBalance()
-        console.log(`gb🚀 ~ returnaccountNames.map ~ balance`, balance)
 
         const total = balance.total
 

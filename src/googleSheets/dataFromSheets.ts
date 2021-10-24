@@ -68,9 +68,14 @@ class SpreadSheet {
     async getAccount(name: string): Promise<Account> {
         const rawRows = await this.getRows()
 
-        const rows = rawRows.map((r) => ({
-            [r['crypto']]: { price: undefined, amount: r[name] },
-        }))
+        const rows = rawRows
+            .filter((r) => {
+                return r[name] !== undefined
+            })
+
+            .map((r) => ({
+                [r['crypto']]: { price: undefined, amount: r[name] },
+            }))
 
         const account = {}
         rows.forEach((row) => {
