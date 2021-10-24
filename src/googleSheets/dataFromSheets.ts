@@ -53,8 +53,8 @@ class SpreadSheet {
         let sheet
         try {
             sheet = await this.getSheet()
-            await sheet.loadCells('A22:J84') // loads a range of cells
-            console.log(sheet.cellStats) // total cells, loaded, how many non-empty
+            await sheet.loadCells('A22:AH84') // loads a range of cells
+            // console.log(sheet.cellStats) // total cells, loaded, how many non-empty
         } catch (error) {
             console.log(`gb🚀 ~ SpreadSheet ~ writeToCalc= ~ error`, error)
         }
@@ -85,6 +85,17 @@ class SpreadSheet {
             const cell = sheet.getCell(firstRowInd, colIndex + 2)
             cell.value = accountName
         })
+
+        // WRITE RATES
+        const ag22 = sheet.getCell(firstRowInd, 32)
+        ag22.value = 'BTCUSD'
+        const ag23 = sheet.getCell(firstRowInd + 1, 32)
+        ag23.value = cryptoVision.rates.BTCUSD
+
+        const ah22 = sheet.getCell(firstRowInd, 33)
+        ah22.value = 'EURUSD'
+        const ah23 = sheet.getCell(firstRowInd + 1, 33)
+        ah23.value = cryptoVision.rates.EURUSD
 
         // PREPARE DATA
         interface DraftRows {
