@@ -1,6 +1,9 @@
 import axios from 'axios'
+import { Accounts } from '../cryptoVision'
 
-export const addPrices = async (allAccountsWithoutPrice) => {
+export const addPrices = async (
+    allAccountsWithoutPrice: Accounts,
+): Promise<Accounts> => {
     const prices = await fetchUsdPrices()
 
     Object.keys(allAccountsWithoutPrice).forEach((accountName) => {
@@ -41,7 +44,7 @@ interface CryptoPrices {
 
 export const fetchUsdPrices = async (): Promise<CryptoPrices> => {
     try {
-        const response = await axios(
+        const response = await axios.get(
             'http://api.coincap.io/v2/assets?limit=100',
         )
 
@@ -55,6 +58,12 @@ export const fetchUsdPrices = async (): Promise<CryptoPrices> => {
 
         return usdPrices
     } catch (error) {
+        console.log(
+            'ERROR WHEN FETCHING USD PRICES FROM http://api.coincap.io/v2/assets?limit=100',
+        )
+
+        console.log(`gb🚀 ~ fetchUsdPrices ~ error`, error)
+
         return error
     }
 }
